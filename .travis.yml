@@ -1,0 +1,15 @@
+language: generic
+# Since we are using docker, tell Travis we need super user permission. 
+sudo: required
+# Install Docker
+services:
+    - docker
+
+# We need the following done before our tests can be ran
+before_install:
+    - docker build -t jkiley/docker-react -f Dockerfile.dev .
+
+# The script section should list all of the commands we need Travis to execute to run our test suite.
+# If travis ever gets a response code other than 0, it assumes our code is broken. 
+script: 
+    - docker run -e CI=true jkiley/docker-react npm run test
